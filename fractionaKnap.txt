@@ -1,0 +1,70 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+// Structure to represent an item
+struct Item {
+    int profit, weight;
+    float ratio;
+};
+
+// Custom comparator
+bool compare(Item a, Item b) {
+    return a.ratio > b.ratio; // higher ratio first
+}
+
+// Fractional knapsack function
+void fractionalKnapsack(Item items[], int n, int capacity) {
+    // Calculate profit/weight ratio for each item
+    for (int i = 0; i < n; i++) {
+        items[i].ratio = (float)items[i].profit / items[i].weight;
+    }
+
+    // Sort in decreasing order of ratio
+    sort(items, items + n, compare);
+
+    float totalProfit = 0;
+    int remaining = capacity;
+
+    cout << "\nItems added in Knapsack:\n";
+
+    for (int i = 0; i < n; i++) {
+        if (remaining == 0)
+            break;
+
+        if (items[i].weight <= remaining) {
+            remaining -= items[i].weight;
+            totalProfit += items[i].profit;
+            cout << "Item " << i + 1 << " added (100%)\n";
+        } else {
+            // Taking fraction
+            float fraction = (float)remaining / items[i].weight;
+            totalProfit += items[i].profit * fraction;
+            cout << "Item " << i + 1 << " added (" << fraction * 100 << "%)\n";
+            remaining = 0;
+        }
+    }
+
+    cout << "\nTotal Profit: " << totalProfit << endl;
+}
+
+int main() {
+    int n, capacity;
+
+    cout << "Enter number of items: ";
+    cin >> n;
+
+    Item items[n]; // create array after reading n
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter profit and weight for item " << i + 1 << ": ";
+        cin >> items[i].profit >> items[i].weight;
+    }
+
+    cout << "Enter knapsack capacity: ";
+    cin >> capacity;
+
+    fractionalKnapsack(items, n, capacity);
+
+    return 0;
+}
