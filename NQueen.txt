@@ -15,17 +15,14 @@ void printBoard(int board[N][N]) {
 bool isSafe(int board[N][N], int row, int col) {
     int i, j;
 
-    // 1️⃣ Check left side of current row
     for (i = 0; i < col; i++)
         if (board[row][i])
             return false;
 
-    // 2️⃣ Check upper-left diagonal
     for (i = row, j = col; i >= 0 && j >= 0; i--, j--)
         if (board[i][j])
             return false;
 
-    // 3️⃣ Check lower-left diagonal
     for (i = row, j = col; i < N && j >= 0; i++, j--)
         if (board[i][j])
             return false;
@@ -63,3 +60,4 @@ int main() {
 
     return 0;
 }
+
